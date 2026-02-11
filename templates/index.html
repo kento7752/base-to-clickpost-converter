@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASE → クリックポスト CSV変換ツール</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">📦 BASE → クリックポスト<br>CSV変換ツール</h1>
+            <p class="subtitle">BASEの注文CSVをクリックポストのまとめ申し込み用CSVに自動変換</p>
+        </header>
+
+        <main class="main-content">
+            <!-- ステップ表示 -->
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">BASEから注文CSVをダウンロード</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">CSVファイルをアップロード</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">クリックポスト用CSVをダウンロード</div>
+                </div>
+            </div>
+
+            <!-- アップロードエリア -->
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📂</div>
+                    <div class="upload-text">
+                        <p class="upload-main">ここにCSVファイルをドロップ</p>
+                        <p class="upload-sub">または</p>
+                        <button class="btn-select" id="btnSelect">ファイルを選択</button>
+                    </div>
+                    <input type="file" id="fileInput" accept=".csv" style="display: none;">
+                </div>
+
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="file-name" id="fileName"></div>
+                    <button class="btn-remove" id="btnRemove">✕ 削除</button>
+                </div>
+            </div>
+
+            <!-- 変換ボタン -->
+            <div class="action-section">
+                <button class="btn-convert" id="btnConvert" disabled>
+                    <span class="btn-text">変換する</span>
+                </button>
+            </div>
+
+            <!-- 結果表示 -->
+            <div class="result-section" id="resultSection" style="display: none;">
+                <div class="result-success">
+                    <div class="result-icon">✅</div>
+                    <h2 class="result-title">変換完了！</h2>
+                    <p class="result-text" id="resultText"></p>
+                    <button class="btn-download" id="btnDownload">
+                        📥 ダウンロード
+                    </button>
+                </div>
+            </div>
+
+            <!-- エラー表示 -->
+            <div class="error-section" id="errorSection" style="display: none;">
+                <div class="error-content">
+                    <div class="error-icon">⚠️</div>
+                    <h3 class="error-title">エラーが発生しました</h3>
+                    <p class="error-text" id="errorText"></p>
+                    <button class="btn-retry" id="btnRetry">もう一度試す</button>
+                </div>
+            </div>
+
+            <!-- ローディング -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">変換中...</p>
+            </div>
+
+            <!-- 注意事項 -->
+            <div class="info-section">
+                <h3 class="info-title">📌 ご利用上の注意</h3>
+                <ul class="info-list">
+                    <li>BASEの管理画面から「注文管理」→「CSVダウンロード」で取得したCSVをご利用ください</li>
+                    <li>1回のアップロードで最大40件まで変換可能です（クリックポストの制限）</li>
+                    <li>ファイルサイズは最大5MBまでです</li>
+                    <li>変換後のファイルは自動的にShift-JISエンコーディングで出力されます</li>
+                    <li>アップロードされたファイルは変換後すぐに削除され、サーバーに保存されません</li>
+                </ul>
+            </div>
+
+            <!-- 使い方 -->
+            <div class="guide-section">
+                <h3 class="guide-title">📖 使い方</h3>
+                <ol class="guide-list">
+                    <li><strong>BASEから注文CSVをダウンロード</strong><br>
+                        BASE管理画面 → 注文管理 → CSVダウンロード
+                    </li>
+                    <li><strong>ファイルをアップロード</strong><br>
+                        ドラッグ&ドロップ または ファイル選択ボタンをクリック
+                    </li>
+                    <li><strong>変換ボタンをクリック</strong><br>
+                        自動的にクリックポスト形式に変換されます
+                    </li>
+                    <li><strong>ダウンロード</strong><br>
+                        変換完了後、ダウンロードボタンをクリック
+                    </li>
+                    <li><strong>クリックポストにアップロード</strong><br>
+                        <a href="https://clickpost.jp/" target="_blank" rel="noopener">クリックポスト公式サイト</a> → まとめ申込 → CSVアップロード
+                    </li>
+                </ol>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>© 2026 BASE to ClickPost Converter | Made with ❤️ for EC sellers</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
