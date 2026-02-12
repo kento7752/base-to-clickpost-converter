@@ -239,21 +239,21 @@ def convert():
         # 変換処理
         converted_content, count = convert_base_to_clickpost(file_content)
         
-        # 一時ファイルに保存
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.csv')
-        temp_file.write(converted_content)
-        temp_file.close()
-        
-        # レスポンス用のファイル名を生成
+                # レスポンス用のファイル名を生成
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         output_filename = f'clickpost_{timestamp}.csv'
+        
+        # Base64エンコードしてレスポンスに含める
+        import base64
+        encoded_content = base64.b64encode(converted_content).decode('utf-8')
         
         return jsonify({
             'success': True,
             'count': count,
             'filename': output_filename,
-            'temp_path': temp_file.name
+            'content': encoded_content
         })
+
     
     except Exception as e:
         print(f"Error: {str(e)}")
