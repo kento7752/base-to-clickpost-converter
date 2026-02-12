@@ -130,12 +130,13 @@ async function handleConvert() {
 
         const data = await response.json();
 
-        if (response.ok && data.success) {
+               if (response.ok && data.success) {
             // 成功
             downloadData = {
-                tempPath: data.temp_path,
+                content: data.content,
                 filename: data.filename
             };
+
 
             resultText.textContent = `${data.count}件の注文を変換しました`;
             showResult();
