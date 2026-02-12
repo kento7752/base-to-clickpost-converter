@@ -70,15 +70,9 @@ def split_address(prefecture, address1, address2, max_length=20):
 
 def get_product_summary(products, max_length=15):
     """商品名リストから内容品を生成（15文字以内）"""
-    if not products:
-        return "商品"
-    
-    # 最初の商品名を使用
-    first_product = products[0]
-    # 改行・不要な文字を削除
-    product_name = first_product.replace('\n', ' ').replace('\r', '').strip()
-    
-    return truncate_text(product_name, max_length)
+    # 常に固定の内容品を返す
+    return "ふくまき　お役に立てますように"
+
 
 def detect_encoding(file_content):
     """ファイルのエンコーディングを検出"""
