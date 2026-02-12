@@ -264,9 +264,14 @@ def convert():
 def download(temp_path):
     """変換済みファイルのダウンロード"""
     try:
+        # パスのデコード
+        import urllib.parse
+        temp_path = urllib.parse.unquote(temp_path)
+        
         # セキュリティ: パスのバリデーション
-        if not os.path.exists(temp_path) or not temp_path.startswith('/tmp/'):
+        if not os.path.exists(temp_path):
             return jsonify({'error': 'ファイルが見つかりません'}), 404
+
         
         # ファイル名を取得
         filename = request.args.get('filename', 'clickpost.csv')
