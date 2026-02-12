@@ -260,44 +260,36 @@ def convert():
         print(traceback.format_exc())
         return jsonify({'error': f'変換中にエラーが発生しました: {str(e)}'}), 500
 
-@app.route('/download/<path:temp_path>')
-def download(temp_path):
+@app.route('/download', methods=['POST'])
+def download():
     """変換済みファイルのダウンロード"""
     try:
-        # パスのデコード
-        import urllib.parse
-        temp_path = urllib.parse.unquote(temp_path)
+        data = request.json
+        content = data.get('content')
+        filename = data.get('filename', 'clickpost.csv')
         
-        # セキュリティ: パスのバリデーション
-        if not os.path.exists(temp_path):
-            return jsonify({'error': 'ファイルが見つかりません'}), 404
-
+        if not content:
+            return jsonify({'error': 'ファイルデータがありません'}), 400
         
-        # ファイル名を取得
-        filename = request.args.get('filename', 'clickpost.csv')
+        # Base64デコード
+        import base64
+        file_content = base64.b64decode(content)
         
-        # ファイルを送信
-        response = send_file(
-            temp_path,
+        # BytesIOを使用してメモリ内で処理
+        from io import BytesIO
+        file_obj = BytesIO(file_content)
+        
+        return send_file(
+            file_obj,
             mimetype='text/csv',
             as_attachment=True,
             download_name=filename
         )
-        
-        # ダウンロード後にファイルを削除
-        @response.call_on_close
-        def cleanup():
-            try:
-                if os.path.exists(temp_path):
-                    os.remove(temp_path)
-            except Exception as e:
-                print(f"Failed to delete temp file: {e}")
-        
-        return response
     
     except Exception as e:
         print(f"Download error: {str(e)}")
         return jsonify({'error': 'ダウンロード中にエラーが発生しました'}), 500
+
 
 @app.errorhandler(413)
 def request_entity_too_large(error):
