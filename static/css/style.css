@@ -6,23 +6,23 @@
 }
 
 :root {
-    --primary-color: #4A90E2;
-    --primary-hover: #357ABD;
-    --success-color: #27AE60;
+    --primary-color: #FF6B35;
+    --primary-hover: #E55A2B;
+    --success-color: #7CB342;
     --error-color: #E74C3C;
     --warning-color: #F39C12;
-    --bg-color: #F5F7FA;
+    --bg-color: #FFF8F3;
     --card-bg: #FFFFFF;
     --text-primary: #2C3E50;
-    --text-secondary: #7F8C8D;
-    --border-color: #E1E8ED;
+    --text-secondary: #666666;
+    --border-color: #FFE5D9;
     --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #FF6B35 0%, #FFA726 100%);
     color: var(--text-primary);
     min-height: 100vh;
     padding: 20px;
@@ -31,6 +31,16 @@ body {
 .container {
     max-width: 900px;
     margin: 0 auto;
+}
+
+/* ロゴ */
+.logo {
+    max-width: 300px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ヘッダー */
