@@ -152,15 +152,38 @@ async function handleConvert() {
 }
 
 // ダウンロード処理
-function handleDownload() {
+async function handleDownload() {
     if (!downloadData) return;
 
-    // ダウンロードURLを生成
-    const downloadUrl = `/download/${encodeURIComponent(downloadData.tempPath)}?filename=${encodeURIComponent(downloadData.filename)}`;
-    
-    // ダウンロードを実行
-    window.location.href = downloadUrl;
+    try {
+        const response = await fetch('/download', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                content: downloadData.content,
+                filename: downloadData.filename
+            })
+        });
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = downloadData.filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } else {
+            showError('ダウンロードに失敗しました');
+        }
+    } catch (error) {
+        console.error('Download error:', error);
+        showError('ダウンロード中にエラーが発生しました');
+    }
 }
+
 
 // リトライ処理
 function handleRetry() {
